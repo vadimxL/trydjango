@@ -1,5 +1,8 @@
+import imp
 import random
 from django.http import HttpResponse
+from django.template.loader import render_to_string
+from articles.models import Article
 
 
 def home_view(request):
@@ -7,23 +10,18 @@ def home_view(request):
     Take in a request (Dango sends request)
     Return HTML as a response (We pick to return the response)
     """
-    name = "Vadim"
-    name2 = "Alona"
-    number = random.randint(10,123123123) # Can be some API call to REST API...
+    rand_id = random.randint(1,4) # Can be some API call to REST API...
+    article_obj = Article.objects.get(id=rand_id)
+    test_list = [100, 101, 102, 103, 104]
 
-    # from database?
-    # article_name = ?
-    # article_content = ?
+    # Create dictionary
+    context = {
+        "test_list": test_list,
+        "title": article_obj.title,
+        "id": article_obj.id,
+        "content": article_obj.content
+    }
 
     # Django templates
-    H1_STRING = f"""
-    <h1>Hello {name} - {number}!</h1>
-    """
-
-    P_STRING = f"""
-    <p>Hello {name} - {number}!</p>
-    <p>Hello {name2}!</p>
-    <img src="https://soviet-art.ru/wp-content/uploads/2016/03/Legendary-Soviet-chocolate-Alyonka-1.jpg" style="width:200px;height:300px;">
-    """
-    HTML_STRING = H1_STRING + P_STRING
-    return HttpResponse(HTML_STRING)
+    html_response = render_to_string("home-view.html", context=context)
+    return HttpResponse(html_response)

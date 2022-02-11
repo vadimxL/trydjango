@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ title }}!</h1>
+<p>{{ content }} {{ id }}!</p>
+
+<ul>
+    {% for x in test_list %}
+        <li>{{ x }}</li>
+    {% endfor %}
+</ul>
+
+
+{% endblock content %}
